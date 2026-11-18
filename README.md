@@ -26,7 +26,7 @@ Before training, backpropagation gradients are rigorously audited against centra
 Trained on the highly non-linear **Two Moons dataset** (300 samples with Gaussian noise):
 * **Architecture:** 2 Inputs $\rightarrow$ 8 Hidden Neurons (Sigmoid) $\rightarrow$ 1 Output Neuron (Sigmoid).
 * **Optimization:** 8,000 Epochs via SGD ($\text{lr} = 0.8$).
-
+![Training Results](results.png)
 ---
 
 ## 🚀 Quick Start & Execution

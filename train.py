@@ -85,7 +85,7 @@ if __name__ == "__main__":
     accuracy = (correct / len(X)) * 100
     print(f"\nTraining Complete! Final Accuracy: {accuracy:.2f}%")
 
-    # 6. VISUALIZATIONS
+# 6. VISUALIZATIONS
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
     # Plot A: Training Loss Curve
@@ -110,4 +110,9 @@ if __name__ == "__main__":
     axes[1].set_ylabel("Feature X2")
 
     plt.tight_layout()
+    
+    # SAVE THE PLOT AS AN IMAGE
+    plt.savefig('results.png', dpi=300, bbox_inches='tight')
+    print("Saved training results visualization to 'results.png'!")
+    
     plt.show()
