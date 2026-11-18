@@ -36,7 +36,7 @@ Trained on the highly non-linear **Two Moons dataset** (300 samples with Gaussia
    git clone [https://github.com/semalign/machine-learning-and-mathematics.git](https://github.com/semalign/machine-learning-and-mathematics.git)
    cd machine-learning-and-mathematics
 2. install dependencies:
-       ```bash
+    ```bash
        pip install -r requirements.txt
 3. Run training and visualizations:
     ```bash 
