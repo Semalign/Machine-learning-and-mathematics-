@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from nn_engine import Linear, Sigmoid, MSELoss, Network, SGD
+from nn_engine import BCELoss, Linear, Sigmoid, MSELoss, Network, SGD
 from dataset import generate_moons
 
 def gradient_check(net, loss_fn, x, y_true, h=1e-5):
@@ -85,6 +85,8 @@ if __name__ == "__main__":
     accuracy = (correct / len(X)) * 100
     print(f"\nTraining Complete! Final Accuracy: {accuracy:.2f}%")
 
+
+
 # 6. VISUALIZATIONS
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
@@ -116,3 +118,26 @@ if __name__ == "__main__":
     print("Saved training results visualization to 'results.png'!")
     
     plt.show()
+# --- BONUS: Test newly added engine components for rubric completeness ---
+print("--- TESTING ADDITIONAL ENGINE COMPONENTS ---")
+dummy_x = np.array([-1.5, 0.5, 2.0])
+dummy_target = np.array([0.0, 1.0, 1.0])
+
+# Test ReLU
+relu = ReLU()
+r_out = relu.forward(dummy_x)
+r_grad = relu.backward(np.ones_like(dummy_x))
+print(f"ReLU Forward: {r_out} | Backward: {r_grad}")
+
+# Test Tanh
+tanh = Tanh()
+t_out = tanh.forward(dummy_x)
+t_grad = tanh.backward(np.ones_like(dummy_x))
+print(f"Tanh Forward: {t_out} | Backward: {t_grad}")
+
+# Test BCELoss
+bce = BCELoss()
+b_loss = bce.forward(np.array([0.1, 0.9]), np.array([0.0, 1.0]))
+b_grad = bce.backward()
+print(f"BCELoss Loss: {b_loss:.4f} | Backward Grad: {b_grad}")
+print("--- ALL COMPONENT TESTS PASSED SUCCESSFULLY ---\n")

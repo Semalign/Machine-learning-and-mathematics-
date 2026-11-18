@@ -2,8 +2,8 @@ import numpy as np
 
 class Linear:
     def __init__(self, input_dim, output_dim):
-        # He/Xavier-style initialization scaled for stability
-        self.W = np.random.randn(input_dim, output_dim) * np.sqrt(2.0 / input_dim)
+        # Xavier/Glorot Initialization for Sigmoid/Tanh stability
+        self.W = np.random.randn(input_dim, output_dim) * np.sqrt(1.0 / input_dim)
         self.b = np.zeros((output_dim,))
         self.dW = None
         self.db = None
@@ -35,12 +35,31 @@ class Linear:
 
 class Sigmoid:
     def forward(self, z):
-        # Numerically stable sigmoid or standard
         self.out = 1.0 / (1.0 + np.exp(-np.clip(z, -500, 500)))
         return self.out
 
     def backward(self, upstream_grad):
         return upstream_grad * self.out * (1.0 - self.out)
+
+
+class ReLU:
+    def forward(self, z):
+        self.z = z
+        return np.maximum(0, z)
+
+    def backward(self, upstream_grad):
+        # Derivative is 1 for z > 0, else 0
+        return upstream_grad * (self.z > 0)
+
+
+class Tanh:
+    def forward(self, z):
+        self.out = np.tanh(z)
+        return self.out
+
+    def backward(self, upstream_grad):
+        # Derivative of tanh is (1 - tanh^2(z))
+        return upstream_grad * (1.0 - self.out ** 2)
 
 
 class MSELoss:
@@ -50,9 +69,20 @@ class MSELoss:
         return np.mean((y_pred - y_true) ** 2)
 
     def backward(self):
-        # Derivative of MSE: 2 * (y_pred - y_true) / n
         n = self.y_pred.size
         return (2.0 / n) * (self.y_pred - self.y_true)
+
+
+class BCELoss:
+    def forward(self, y_pred, y_true):
+        # Clip predictions to prevent log(0) errors
+        self.y_pred = np.clip(y_pred, 1e-15, 1.0 - 1e-15)
+        self.y_true = y_true
+        return -np.mean(self.y_true * np.log(self.y_pred) + (1.0 - self.y_true) * np.log(1.0 - self.y_pred))
+
+    def backward(self):
+        n = self.y_pred.size
+        return ((self.y_pred - self.y_true) / (self.y_pred * (1.0 - self.y_pred))) / n
 
 
 class Network:
@@ -80,5 +110,7 @@ class SGD:
     def step(self):
         for layer in self.layers:
             if hasattr(layer, 'W') and layer.dW is not None:
+                layer.dW = np.clip(layer.dW, -5.0, 5.0) # Gradient clipping for extra stability
+                layer.db = np.clip(layer.db, -5.0, 5.0)
                 layer.W -= self.lr * layer.dW
                 layer.b -= self.lr * layer.db
