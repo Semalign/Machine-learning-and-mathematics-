@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from nn_engine import BCELoss, Linear, Sigmoid, MSELoss, Network, SGD
+from nn_engine import Linear, Sigmoid, ReLU, Tanh, MSELoss, BCELoss, Network, SGD 
 from dataset import generate_moons
 
 def gradient_check(net, loss_fn, x, y_true, h=1e-5):
