@@ -31,4 +31,7 @@ if __name__ == "__main__":
     plt.xlabel("Feature X1")
     plt.ylabel("Feature X2")
     plt.grid(True, linestyle='--', alpha=0.5)
+    plt.tight_layout()
+    plt.savefig('raw_moons.png', dpi=300, bbox_inches='tight')
     plt.show()
+    
